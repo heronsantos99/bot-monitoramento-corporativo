@@ -65,7 +65,6 @@ SOURCES: dict[str, dict] = {
         "feeds": [
             "https://www.reutersagency.com/feed/?best-sectors=business-finance&post_type=best",
         ],
-        # Reuters frequently drops RSS endpoints; HTML fallback keeps us covered.
         "html": "https://www.reuters.com/world/americas/",
     },
     "InfoMoney": {
@@ -77,21 +76,34 @@ SOURCES: dict[str, dict] = {
     "Exame": {
         "feeds": ["https://exame.com/feed/"],
     },
+    # --- NOVAS FONTES INSTITUCIONAIS (DESCENTRALIZADAS) ---
+    "FGV IBRE": {
+        "feeds": [],
+        "html": "https://portalibre.fgv.br/",
+    },
+    "Agência CNI": {
+        "feeds": [],
+        "html": "https://noticias.portaldaindustria.com.br/noticias/",
+    },
+    "Serasa Experian": {
+        "feeds": [],
+        "html": "https://www.serasaexperian.com.br/sala-de-imprensa/",
+    },
 }
 
 # Keywords to monitor. Each entry is the canonical label plus regex-ready
 # variants (accent-insensitive matching is handled by normalisation).
 KEYWORDS: dict[str, list[str]] = {
-    "CARF": [r"\bcarf\b"],
-    "Voto de Qualidade": [r"voto de qualidade"],
-    "STF": [r"\bstf\b", r"supremo tribunal federal"],
-    "STJ": [r"\bstj\b", r"superior tribunal de justica"],
-    "Congresso Nacional": [r"congresso nacional", r"\bcamara dos deputados\b", r"\bsenado\b"],
-    "M&A": [r"\bm&a\b", r"\bm e a\b", r"fusao", r"fusoes", r"aquisic"],
-    "Teses Tributárias": [r"tese[s]? tributaria", r"tributaria[s]?\b", r"\btributo[s]?\b"],
-    "Balanços": [r"\bbalanco[s]?\b", r"resultado[s]? trimestral", r"\blucro liquido\b"],
-    "Regulação Corporativa": [r"regulac", r"\bcvm\b", r"\bgovernanca\b"],
-    "Juros": [r"\bjuros\b", r"\bselic\b", r"taxa de juros", r"\bcopom\b"],
+    "CARF": [r"\bcarf\b", r"conselho administrativo de recursos fiscais"],
+    "STF": [r"\bstf\b", r"supremo tribunal federal", r"repercussao geral"],
+    "STJ": [r"\bstj\b", r"superior tribunal de justica", r"recurso especial", r"recurso repetitivo"],
+    "Congresso & Legislação": [r"congresso nacional", r"\bcamara dos deputados\b", r"\bsenado\b", r"projeto de lei", r"\bmedida provisoria\b", r"reforma tributaria"],
+    "M&A e Societário": [r"\bm&a\b", r"\bm e a\b", r"fusoes", r"aquisic", r"joint venture", r"private equity"],
+    "Recuperação & Crédito": [r"recuperacao judicial", r"\binadimplencia\b", r"falencia", r"credito corporativo"],
+    "Mercado de Capitais": [r"\bcvm\b", r"valores mobiliarios", r"\bipo\b", r"follow on", r"debenture[s]?"],
+    "Balanços e Resultados": [r"\bbalanco[s]?\b", r"resultado[s]? trimestral", r"\blucro liquido\b", r"\bebitda\b"],
+    "Regulação & Concorrência": [r"regulac", r"\bgovernanca\b", r"compliance", r"\bcade\b", r"defesa economica"],
+    "Macroeconomia e Juros": [r"\bjuros\b", r"\bselic\b", r"\bcopom\b", r"politica monetaria", r"\bipca\b"],
 }
 
 REPORTS_DIR = Path(__file__).resolve().parent / "reports"
