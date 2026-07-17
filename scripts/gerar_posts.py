@@ -212,10 +212,27 @@ def buscar_foto(query):
         print(f"  (busca de foto falhou: {e} — usando fundo gráfico)")
     return None, None
 
+def _foto_local(p):
+    """Procura uma foto já baixada pelo coletor em imagens/<categoria>.jpg."""
+    base = pathlib.Path(__file__).parent.parent  # raiz do repo
+    slug_cat = slug(p.get("categoria", ""))
+    for cand in (base / "imagens" / f"{slug_cat}.jpg", pathlib.Path("imagens") / f"{slug_cat}.jpg"):
+        if cand.exists():
+            cred = ""
+            cred_f = cand.parent / "_creditos.json"
+            if cred_f.exists():
+                try: cred = json.loads(cred_f.read_text(encoding="utf-8")).get(slug_cat, "")
+                except Exception: pass
+            return cand.read_bytes(), cred
+    return None, None
+
 def foto_css(p):
-    """Devolve o CSS de fundo do post A/Reels: foto real (se achar) ou fundo gráfico da marca."""
-    q = p.get("imagem_busca", "").strip()
-    img, cred = buscar_foto(q) if q else (None, None)
+    """CSS de fundo do post A/Reels. Ordem: foto local (baixada pelo coletor) ->
+    Pexels ao vivo (se houver chave e rede) -> None (fundo gráfico da marca)."""
+    img, cred = _foto_local(p)
+    if not img:
+        q = p.get("imagem_busca", "").strip()
+        img, cred = buscar_foto(q) if q else (None, None)
     if img:
         b64 = base64.b64encode(img).decode()
         p["_credito_foto"] = cred
