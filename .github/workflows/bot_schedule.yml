@@ -35,6 +35,11 @@ jobs:
       - name: Run scraper
         run: python scraper.py
 
+      - name: Buscar imagens das categorias
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: python scripts/buscar_imagens.py
+
       - name: Configure Git
         run: |
           git config user.name "News Monitoring Bot"
@@ -42,7 +47,7 @@ jobs:
 
       - name: Commit and push report
         run: |
-          git add reports/
+          git add reports/ imagens/
           if git diff --staged --quiet; then
             echo "No new report to commit."
           else
