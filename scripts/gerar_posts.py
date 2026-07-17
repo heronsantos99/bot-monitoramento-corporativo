@@ -106,10 +106,10 @@ def art_D(p):  # contraponto
     return shell(p["fundo"], f"""
 <span class="kick" style="margin-bottom:44px">{esc(p['categoria'])}</span>
 <div style="padding-bottom:38px;border-bottom:4px solid color-mix(in srgb,var(--ac) 45%,transparent)">
-  <div style="font-family:'JetBrains Mono';font-size:24px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px">A notícia</div>
+  <div style="font-family:'JetBrains Mono';font-size:24px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:20px">{esc(p.get('rotulo_fato') or 'O fato')}</div>
   <div style="font-size:44px;line-height:1.25;color:var(--muted);font-weight:500">{esc(p.get('fato',''))}</div></div>
 <div style="margin-top:44px;display:flex;flex-direction:column;flex:1">
-  <div style="font-family:'JetBrains Mono';font-size:24px;letter-spacing:.16em;text-transform:uppercase;color:var(--ac);margin-bottom:22px">O que ninguém disse</div>
+  <div style="font-family:'JetBrains Mono';font-size:24px;letter-spacing:.16em;text-transform:uppercase;color:var(--ac);margin-bottom:22px">{esc(p.get('rotulo_virada') or 'A leitura')}</div>
   <h1 style="font-size:82px">{titulo_html(p)}</h1>
   <div class="foot" style="margin-top:auto"><span class="handle">@reavi.br</span>{ARROW}</div></div>""")
 
