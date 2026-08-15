@@ -48,14 +48,25 @@ def main():
         try: creditos = json.loads((out / "_creditos.json").read_text(encoding="utf-8"))
         except Exception: creditos = {}
 
+    key = key.strip()  # remove espaços/quebras acidentais coladas junto da chave
+
+    def pexels_search(url):
+        # tenta os dois formatos de header aceitos pelo Pexels (com e sem Bearer)
+        ultima = None
+        for header in ({"Authorization": key}, {"Authorization": f"Bearer {key}"}):
+            try:
+                return json.loads(baixar(url, header))
+            except Exception as e:
+                ultima = e
+        raise ultima
+
     ok = 0
     for cat, termo in CATEGORIAS.items():
         try:
             q = urllib.parse.quote(termo)
             page = random.randint(1, 5)  # varia a foto a cada execução
-            data = json.loads(baixar(
-                f"https://api.pexels.com/v1/search?query={q}&per_page=10&orientation=portrait&page={page}",
-                {"Authorization": key}))
+            data = pexels_search(
+                f"https://api.pexels.com/v1/search?query={q}&per_page=10&orientation=portrait&page={page}")
             fotos = data.get("photos", [])
             if not fotos:
                 print(f"  {cat}: nenhum resultado para '{termo}'"); continue
